@@ -1,0 +1,55 @@
+:root {
+    --blue: #0056B9;
+    --yellow: #FFD800;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
+
+header,
+footer {
+    flex-grow: 0;
+    height: 10%;
+    display: flex;
+}
+
+header {
+    background-color: var(--blue);
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+footer {
+    background-color: var(--yellow);
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    height: 75%;
+    width: auto;
+    background-color: rgba(0, 0, 0, 0);
+    border: 2px solid #000;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+header>button>img {
+    height: 100%;
+    width: auto;
+}
