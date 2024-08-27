@@ -10,6 +10,7 @@ const cardInner = document.querySelector(".card-inner");
 const cardFront = document.querySelector(".front");
 const cardBack = document.querySelector(".back");
 
+
 let selectedTopic = 0;
 let selectedCard = 0;
 let dataset = datasets[selectedTopic];
