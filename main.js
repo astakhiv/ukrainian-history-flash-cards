@@ -1,62 +1,79 @@
 const topics = ["Виначення", "Культура і мистецтво", "Дати", "Особи"];
-const dataset = [null, null, dates, null];
+const datasets = [null, null, dates, null];
 
 const topicButtons = document.querySelectorAll("footer>button");
 const heading = document.querySelector("h2");
-const cards = document.querySelector(".cards");
+const cardsContainer = document.querySelector(".cards");
 const card = document.querySelector(".card");
 const cardText = document.querySelector(".card>p");
 
-let selected = 0;
+let selectedTopic = 0;
+let selectedCard = 0;
+let dataset = datasets[selectedTopic];
+let elementIndex = 0;
 
 let touchstartY = 0;
 let touchendY = 0;
 
+UpdateCard();
 
 topicButtons.forEach((btn, i) => {
         btn.addEventListener("click", () => SelectTopic(i) )
     }
 );
 
-cards.addEventListener("touchstart", (e) => ReadTouchStart(e), false);
-cards.addEventListener("touchend", (e) => ReadTouchEnd(e), false);
+cardsContainer.addEventListener("touchstart", ReadTouchStart, false);
+cardsContainer.addEventListener("touchend", ReadTouchEnd, false);
+
+function UpdateCard() {
+    if (dataset == null) {
+        cardText.innerText = "No data here";
+    } else {
+        cardText.innerText = dataset[elementIndex][0];
+    }
+}
 
 function SelectTopic(index) {
-    topicButtons[selected].classList.remove("selected");
-    selected = index;
-    topicButtons[selected].classList.add("selected");
-    heading.innerText = topics[selected];
+    topicButtons[selectedTopic].classList.remove("selected");
+    selectedTopic = index;
+    topicButtons[selectedTopic].classList.add("selected");
+    heading.innerText = topics[selectedTopic];
+
+    dataset = datasets[selectedTopic];
+    elementIndex = 0;
+    UpdateCard();
 }
 
 function ReadTouchStart(e) {
-    console.log(e)
     touchstartY = e.touches[0].clientY;
 }
 
 function ReadTouchEnd(e) {
-    console.log("end", e);
     touchendY = e.changedTouches[0].clientY;
     HandleGesure();
 }
 
 function HandleGesure() {
-    let swiped = 'swiped: ';
-
     if (touchstartY - touchendY > 50) {
-        alert(swiped + 'down!');
+        HandleNextCard();
+    } else if (touchendY - touchstartY > 50) {
+        HandlePrevCard();
     }
-    if (touchendY - touchstartY > 50) {
-        alert(swiped + 'up!');
-    }
-    if (touchendY == touchstartY) {
-        alert('tap!');
-    }
+    UpdateCard();
 }
 
 function HandleNextCard() {
-
+    if (elementIndex + 1 >= dataset.length) {
+        elementIndex = 0;
+    } else {
+        elementIndex++;
+    }
 }
 
 function HandlePrevCard() {
-
+    if (elementIndex - 1 < 0) {
+        elementIndex = dataset.length - 1;
+    } else {
+        elementIndex--;
+    }
 }
