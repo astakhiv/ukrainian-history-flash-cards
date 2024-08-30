@@ -1,5 +1,5 @@
-const topics = ["Виначення", "Культура і мистецтво", "Дати", "Особи"];
-const datasets = [null, null, dates, null];
+const topics = ["Культура і мистецтво", "Дати", "Особи", "Інформація"];
+const datasets = [culture, dates, images, info];
 
 const topicButtons = document.querySelectorAll("footer>button");
 const heading = document.querySelector("h2");
@@ -7,13 +7,15 @@ const cardsContainer = document.querySelector(".cards");
 
 const card = document.querySelector(".card");
 const cardInner = document.querySelector(".card-inner");
-const cardFront = document.querySelector(".front");
-const cardBack = document.querySelector(".back");
+const cardFrontText = document.querySelector(".card-inner>p");
+const cardFrontImg = document.querySelector(".card-inner>img")
+const cardBackText = document.querySelector(".back");
 
 
 let selectedTopic = 0;
 let selectedCard = 0;
 let dataset = datasets[selectedTopic];
+let isFrontImage = true;
 
 let elementIndex = 0;
 let opened = false;
@@ -22,6 +24,7 @@ let touchstartY = 0;
 let touchendY = 0;
 
 UpdateCard();
+UpdateTopic();
 
 topicButtons.forEach((btn, i) => {
         btn.addEventListener("click", () => SelectTopic(i) )
@@ -35,12 +38,34 @@ card.addEventListener("click", HandleFlipCard);
 
 function UpdateCard() {
     if (dataset == null) {
-        cardFront.innerText = "No data here";
-        cardBack.innerText = "No data here";
+        SetFrontData("No data here");
+        cardBackText.innerText = "No data here";
     } else {
-        cardFront.innerText = dataset[elementIndex][0];
-        cardBack.innerText = dataset[elementIndex][1];
+        SetFrontData(dataset[elementIndex][0]);
+        cardBackText.innerText = dataset[elementIndex][1];
     }
+}
+
+function SetFrontData(data) {
+    if (isFrontImage) {
+        cardFrontImg.src = data;
+    } else {
+        cardFrontText.innerText = data;
+    }
+}
+
+function HandleFrontTypeChange() {
+    if (isFrontImage) {
+        cardFrontText.classList.add("invisible");
+        cardFrontImg.classList.remove("invisible");
+    } else {
+        cardFrontText.classList.remove("invisible");
+        cardFrontImg.classList.add("invisible");
+    }
+}
+
+function UpdateTopic() {
+    heading.innerText = topics[selectedTopic];
 }
 
 function HandleFlipCard() {
@@ -59,8 +84,11 @@ function SelectTopic(index) {
     topicButtons[selectedTopic].classList.remove("selected");
     selectedTopic = index;
     topicButtons[selectedTopic].classList.add("selected");
-    heading.innerText = topics[selectedTopic];
+    isFrontImage = index % 2 === 0;
 
+    HandleFrontTypeChange();
+    UpdateTopic();
+    
     dataset = datasets[selectedTopic];
     elementIndex = 0;
     UpdateCard();

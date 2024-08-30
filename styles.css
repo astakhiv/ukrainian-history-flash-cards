@@ -116,3 +116,7 @@ p {
 .back {
     transform: rotateY(180deg);
 }
+
+.invisible {
+    display: none;
+}
