@@ -5,6 +5,9 @@ const topicButtons = document.querySelectorAll("footer>button");
 const heading = document.querySelector("h2");
 const cardsContainer = document.querySelector(".cards");
 
+const curLengthText = document.querySelector(".cur-length");
+const sectionLength = document.querySelector(".length");
+
 const card = document.querySelector(".card");
 const cardInner = document.querySelector(".card-inner");
 const cardFrontText = document.querySelector(".card-inner>p");
@@ -25,6 +28,7 @@ let touchendY = 0;
 
 UpdateCard();
 UpdateTopic();
+UpdateLength();
 
 topicButtons.forEach((btn, i) => {
         btn.addEventListener("click", () => SelectTopic(i) )
@@ -80,18 +84,24 @@ function HandleFlipCard() {
     UpdateCard();
 }
 
+function UpdateLength() {
+    curLengthText.innerText = elementIndex + 1;
+    sectionLength.innerText = dataset.length;
+}
+
 function SelectTopic(index) {
     topicButtons[selectedTopic].classList.remove("selected");
     selectedTopic = index;
     topicButtons[selectedTopic].classList.add("selected");
     isFrontImage = index % 2 === 0;
 
-    HandleFrontTypeChange();
-    UpdateTopic();
-    
     dataset = datasets[selectedTopic];
     elementIndex = 0;
+
+    HandleFrontTypeChange();
+    UpdateTopic(); 
     UpdateCard();
+    UpdateLength();
 }
 
 function ReadTouchStart(e) {
@@ -111,6 +121,7 @@ function HandleGesure() {
     }
 
     UpdateCard();
+    UpdateLength();
 }
 
 function SetNextCard() {

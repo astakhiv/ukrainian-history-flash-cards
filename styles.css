@@ -113,6 +113,10 @@ p {
     backface-visibility: hidden;
 }
 
+img.front {
+    object-fit: scale-down;
+}
+
 .back {
     transform: rotateY(180deg);
 }
